@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using NUnit.Framework;
-using OpenQA.Selenium.Support.UI;
 
 namespace AprendendoAutomaçãoSelenium
 {
@@ -166,8 +160,8 @@ namespace AprendendoAutomaçãoSelenium
             IList<IWebElement> elementCount = oSelect.Options;
             Console.WriteLine("Quantidade de opções do select:  " + elementCount.Count);
 
-            */
-            //exibe as opções do select 
+            
+            //imprime no console todas as opções do select 
             IWebDriver driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
 
@@ -175,23 +169,172 @@ namespace AprendendoAutomaçãoSelenium
 
             driver.Url = "http://toolsqa.wpengine.com/automation-practice-form/";
 
-            SelectElement oSelect = new SelectElement(driver.FindElement(By.Id("continents")));
+            SelectElement oSelection = new SelectElement(driver.FindElement(By.Id("continents")));
 
-            IList<IWebElement> elementCount = oSelect.Options;
+            IList<IWebElement> elementCount = oSelection.Options;
 
             int iSize = elementCount.Count;
 
-            for (int i = 0; i > iSize; i++)
+            for (int i = 0; i < iSize; i++)
             {
-                string sValue = elementCount.ElementAt(i).Text;
+                String sValue = elementCount.ElementAt(i).Text;
                 Console.WriteLine(sValue);
+                //oSelection.SelectByIndex(i);
 
+                //Thread.Sleep(2000);
+            }
+            
+            //exercicio de seleção de combobox
+            IWebDriver driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
 
+            driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
 
+            driver.Url = "http://toolsqa.wpengine.com/automation-practice-form/";
 
+            SelectElement oSelection = new SelectElement(driver.FindElement(By.Id("continents")));
 
+            //seleção da opção Europa no campo Continente
+            oSelection.SelectByIndex(1);
+
+            //para esperar a seleção e fazer a mudança
+            Thread.Sleep(2000);
+
+            //seleção da opção Africa no campo Continente
+            oSelection.SelectByText("Africa");
+
+            //para esperar a seleção e fazer a mudança
+            Thread.Sleep(2000);
+
+            //exibir todas as opções do combo no console
+            IList<IWebElement> opcoes = oSelection.Options;
+
+            int totallista = opcoes.Count;
+
+            for (int i = 0; i < totallista; i++)
+            {
+                //percorre a lista do combo 
+                String vValue = oSelection.Options.ElementAt(i).Text;
+
+                //exibe as opções no console
+                Console.WriteLine("Valor do campo seleção é: " + vValue);
+
+                if (vValue.Equals("Antartica"))
+                {
+                    oSelection.SelectByIndex(i);
+                    Console.WriteLine("Valor selecionado da lista é:" + vValue);
+                    break;
+                }
+            }
+            driver.Close();
+           
+
+            //exercício de seleção de combo multiple selection
+            IWebDriver driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
+
+            driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
+
+            driver.Url = "http://toolsqa.wpengine.com/automation-practice-form/";
+
+            SelectElement oSelection = new SelectElement(driver.FindElement(By.Name("selenium_commands")));
+
+            //selecionar a opção "Browser Commands" no campo "Selenium Commands" por index
+            oSelection.SelectByIndex(0);
+            
+            //espera para ver se selecionou
+            Thread.Sleep(2000);
+
+            //desmarca a seleção por index
+            oSelection.DeselectByIndex(0);
+
+            //espera para ver se desmarcou
+            Thread.Sleep(2000);
+
+            //selecionar a opção "Navigation Commands" no campo 'Selenium Commands' por texto
+            oSelection.SelectByText("Navigation Commands");
+
+            //espera para ver se marcou
+            Thread.Sleep(2000);
+
+            //desmarca a opção por texto
+            oSelection.DeselectByText("Navigation Commands");
+
+            //espera para ver se desmarcou
+            Thread.Sleep(2000);
+
+            //captar a lista do campo
+            IList<IWebElement> lista = oSelection.Options;
+
+            //armazena no inteiro o número total de itens
+            int ilistSize = lista.Count;
+
+            //condição para percorrer a lista inteira, a partir do total de itens 
+            for (int i = 0; i < ilistSize; i++)
+            {
+                //percorre a lista recuperando o texto e armazenando na string
+                String vValue = oSelection.Options.ElementAt(i).Text;
+
+                //imprime o texto encontrado deste contador
+                Console.WriteLine("Valores da lista: " + vValue);
+
+                //selecionar todos os elementos um por um
+                oSelection.SelectByIndex(i);
+
+                Thread.Sleep(2000);
             }
 
+            Thread.Sleep(2000);
+
+            //desmarca todos os itens selecionados no for
+            oSelection.DeselectAll();
+
+            //fecha o browser
+            driver.Quit();
+            
+            //trabalhando com tabelas dinâmicas
+            // Abrir o browser para inicar a automação
+            IWebDriver driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
+           
+            //abrir a página de exemplo com tabela dinâmica
+            driver.Navigate().GoToUrl("https://en.wikipedia.org/wiki/Programming_languages_used_in_most_popular_websites");
+            driver.Manage().Timeouts().SetPageLoadTimeout(TimeSpan.FromSeconds(30));
+
+            //localização da tabela na tela, armazenada em uma variável:
+            var elemTable = driver.FindElement(By.XPath(".//*[@id='mw-content-text']/div/table[1]"));
+
+            //obter todas as linhas da tabela
+            List<IWebElement> lstTrElem = new List<IWebElement>(elemTable.FindElements(By.TagName("tr")));
+            String strRowData = "";
+
+            //percorrer cada linha
+            foreach (var elemTr in lstTrElem)
+            {
+                //percorrer as colunas de uma linha 
+                List<IWebElement> lstTdElem = new List<IWebElement>(elemTr.FindElements(By.TagName("td")));
+                if (lstTdElem.Count > 0)
+                {
+                    //percorre cada coluna
+                    foreach (var elemTd in lstTdElem)
+                    {
+                        //"\t\t" é utilizado para colocar um espaço entre dois textos
+                        strRowData = strRowData + elemTd.Text + "\t\t";
+                    }
+                }
+                else
+                {
+                    //imprime a tabela no console
+                    Console.WriteLine("Esta é a tabela");
+                    Console.WriteLine(lstTrElem[0].Text.Replace(" ", "\t\t"));
+                }
+                Console.WriteLine(strRowData);
+                strRowData = String.Empty;
+            }
+            Console.WriteLine("");
+            //driver.Quit();
+            */
+            }
         }
     }
-}
+
