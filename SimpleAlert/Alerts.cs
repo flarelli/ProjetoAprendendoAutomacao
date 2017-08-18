@@ -2,8 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System.Threading;
+using OpenQA.Selenium.Firefox;
 
-namespace SimpleAlert
+namespace Alerts
 {
     [TestClass]
     public class UnitTest1
@@ -63,20 +65,22 @@ namespace SimpleAlert
             driver.Manage().Window.Maximize();
 
             //localiza o botão que abre o alerta
-            IWebElement element = driver.FindElement(By.XPath(".//*[@id='content']/p[11]/button"));
-
-            //'IJavaScriptExecutor' é uma interface utilizada para rodar 'código Javascript' dentro do webdriver (Browser)
-            //para selecionar o botão para abrir o alerta de confirmação
-            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click()", element);
-
+            driver.FindElement(By.XPath(".//*[@id='content']/p[11]/button")).Click();
+                        
             //altera o driver da página para a tela do Alerta exibido
-            IAlert confirmationAlert = driver.SwitchTo().Alert();
+            IAlert promptAlert = driver.SwitchTo().Alert();
 
             //pega o texto do alerta
-            String alertText = confirmationAlert.Text;
-            Console.WriteLine("Texto do Alerta é " + alertText);
+            String alertTexto = promptAlert.Text;
+            Console.WriteLine("Texto do Alerta é " + alertTexto);
 
-            //'.SendKeys()' envia um texto
+            //'.SendKeys()' envia um texto para o campo de observação do alerta exibido
+            promptAlert.SendKeys("Teste");
+            
+            Thread.Sleep(4000);
+
+            // '.Accept()' utilizado para aceitar o alerta '(clica no botão Ok)'
+            promptAlert.Accept();
         }
     }
 }

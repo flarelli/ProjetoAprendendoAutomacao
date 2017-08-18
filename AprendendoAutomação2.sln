@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AprendendoAutomação2", "AprendendoAutomação2\AprendendoAutomação2.csproj", "{91B2BA3C-B5FA-4D13-B44C-08D8848BF31D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alert", "SimpleAlert\Alert.csproj", "{41749B2C-5C80-4134-8E55-272B855BD48D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alert_Window", "SimpleAlert\Alert_Window.csproj", "{41749B2C-5C80-4134-8E55-272B855BD48D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
